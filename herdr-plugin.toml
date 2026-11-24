@@ -1,0 +1,13 @@
+id = "local.resurrect-autostart"
+name = "resurrect-autostart"
+version = "0.1.0"
+min_herdr_version = "0.9.0"
+description = "Runs herdr-resurrect's restore once after the server starts, so Codex and other agents resume without waiting for a first event."
+platforms = ["macos", "linux"]
+
+# [[startup]] runs once per enabled plugin after session restore, when the API socket is ready.
+# The short sleep lets the restored shells finish loading their rc files, so herdr-resurrect
+# does not mistake a starting shell for a busy one. restore skips panes that already run
+# something (for example a Claude that herdr resumed natively).
+[[startup]]
+command = ["sh", "-c", "sleep 2; exec \"$HERDR_BIN_PATH\" plugin action invoke restore --plugin ntindle.herdr-resurrect"]
